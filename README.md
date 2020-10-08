@@ -22,3 +22,6 @@
 > If you prefer installing it with the dummy data run the following command:   
 > - php artisan voyager:install --with   
 
+- 账号密码：
+> email: admin@admin.com    
+> password: password
