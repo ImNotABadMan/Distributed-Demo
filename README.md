@@ -15,8 +15,8 @@
 ### 后台框架
 ##### tcg/voyager
 
-> 官网：https://voyager-docs.devdojo.com/
-> To install Voyager without dummy data simply run
->  php artisan voyager:install
->  If you prefer installing it with the dummy data run the following command:
->  php artisan voyager:install --with
+> 官网：https://voyager-docs.devdojo.com/  
+> To install Voyager without dummy data simply run  
+>  php artisan voyager:install  
+>  If you prefer installing it with the dummy data run the following command:   
+>  php artisan voyager:install --with   
