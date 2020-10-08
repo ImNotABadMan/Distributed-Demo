@@ -64,7 +64,7 @@ class DbController extends Controller
 //                    "onhold"=> ++$product->onhold,
 //                ]);
 
-            DbConnection::connection(2)->table("ss_products_log")->insert([
+            DbConnection::connection(2)->table("ss_products_kill_log")->insert([
                 'productID' => $this->killProductID,
                 'desc' => vsprintf("%s -- killed ", ["get" => Session::getId()])
             ]);

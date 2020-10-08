@@ -30,4 +30,8 @@ Route::get('redis/le-guan-kill', 'RedisLocalController@leGuanKill');
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
+    Route::name("admin.")->namespace("Admin")->group(function () {
+        Route::get('redis', "RedisController@index");
+        Route::get('redis/all', "RedisController@all")->name("redis.all");
+    });
 });

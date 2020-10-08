@@ -2,7 +2,9 @@
 
 namespace Tests\Unit;
 
+use App\Http\Controllers\Admin\RedisController;
 use App\Libs\DbConnection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use PHPUnit\Framework\TestCase;
 
@@ -46,4 +48,6 @@ class ExampleTest extends TestCase
     {
         $this->assertEquals("mysql", DbConnection::connection(2), "Empty");
     }
+
+
 }

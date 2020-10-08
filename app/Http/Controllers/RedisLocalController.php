@@ -56,6 +56,10 @@ class RedisLocalController extends Controller
         return "Redis 秒杀<b>失败</b>";
     }
 
+    /***
+     * 乐观锁秒杀
+     * @return string
+     */
     public function leGuanKill()
     {
         /** @var PhpRedisConnection $redis */
@@ -80,10 +84,8 @@ class RedisLocalController extends Controller
             dump($result);
 
             if ($result[0][0] ?? false) {
-                DbConnection::connection(2)->table("ss_products_log")->insert([
-                    "productID" => $this->killProductID,
-                    "desc" => vsprintf("%s, %s", [Session::getId(), "Le Guan Suo Kill."])
-                ]);
+                // 并发下，加入延时队列处理，减少IO和程序等待时间，响应时间减少
+                $this->redis->rPush("redis_kill_product_" . $this->killProductID, Session::getId());
                 return "Redis 秒杀<b>成功</b>";
             } else {
                 return "Redis 秒杀<b>失败</b>";
