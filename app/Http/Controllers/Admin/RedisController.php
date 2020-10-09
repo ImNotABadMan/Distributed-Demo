@@ -40,6 +40,12 @@ end
 return arr
 LUA;
 
+        //if (typeStr == 3) then
+        //        listLen = redis.call('llen', value)
+        //        arr[value] = redis.call('lrange', value, 0, listLen)
+        //    elseif (type == 1) then
+        //        arr[value] = redis.call('get', value)
+        //    end
         $luaRes = $this->redis->eval($lua, 0);
 
         $data = [];
