@@ -29,13 +29,13 @@ class RedisController extends Controller
     {
         // lua脚本
         $lua = <<<LUA
-local keys = redis.call('keys', '*')
-local keyLen = #keys
+local keys = redis.call('keys', '*')cd
+local keyLen = #keys+
 local arr = {}
 
 for key, value in pairs(keys) do
     return redis.call('type', 'le_stock')
-    
+
 end
 return arr
 LUA;
