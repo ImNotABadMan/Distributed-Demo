@@ -29,23 +29,33 @@ class RedisController extends Controller
     {
         // lua脚本
         $lua = <<<LUA
-local keys = redis.call('keys', '*')cd
-local keyLen = #keys+
-local arr = {}
+local keys = redis.call('keys', '*')
 
-for key, value in pairs(keys) do
-    return redis.call('type', 'le_stock')
+local function all(keys)
+    local arr = {}
+    local typeStr = ''
+    local keyLen = #keys
 
+    for index, key in pairs(keys) do
+        typeStr = redis.call('type', key)['ok']
+        arr[index][1] = key
+        if (typeStr == 'list') then
+            listLen = redis.call('llen', key)
+            arr[index][2] = redis.call('lrange', key, 0, listLen)
+        elseif (typeStr == 'string') then
+            arr[index][2] = redis.call('get', key)
+        end
+    end
+
+    return arr
 end
-return arr
+
+return all(keys)
+
 LUA;
 
-        //if (typeStr == 3) then
-        //        listLen = redis.call('llen', value)
-        //        arr[value] = redis.call('lrange', value, 0, listLen)
-        //    elseif (type == 1) then
-        //        arr[value] = redis.call('get', value)
-        //    end
+        //return arr
+
         $luaRes = $this->redis->eval($lua, 0);
 
         $data = [];
@@ -53,3 +63,5 @@ LUA;
         return ["data" => $luaRes];
     }
 }
+
+// local keys = redis.call('keys', '*');local keyLen = #keys;local arr = {};local typeStr = '';for index, key in pairs(keys) do typeStr = redis.call('type', key)['ok'];if (typeStr == 'list') then listLen = redis.call('llen', key);arr[key] = redis.call('lrange', key, 0, listLen); elseif (typeStr == 'string') then arr[key] = redis.call('get', key); end end return arr

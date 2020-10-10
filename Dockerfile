@@ -1,5 +1,6 @@
 # sources.list
-
+# 原生php-fpm
+# 各种包自己解决还有apt也没有
 #
 # NOTE: THIS DOCKERFILE IS GENERATED VIA "apply-templates.sh"
 #
@@ -232,7 +233,7 @@ RUN set -eux; \
 		echo 'daemonize = no'; \
 		echo; \
 		echo '[www]'; \
-		echo 'listen = 9004'; \
+		echo 'listen = 9000'; \
 	} | tee php-fpm.d/zz-docker.conf
 # apt镜像加速
 
