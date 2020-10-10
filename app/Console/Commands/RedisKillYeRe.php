@@ -13,7 +13,7 @@ class RedisKillYeRe extends Command
      *
      * @var string
      */
-    protected $signature = 'redis:kill-ye-re';
+    protected $signature = 'redis:pro-ye-re';
 
     /**
      * The console command description.

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Transformer\RedisTrans;
 use Illuminate\Http\Request;
 use Illuminate\Redis\Connections\PhpRedisConnection;
 use Illuminate\Support\Arr;
@@ -25,7 +26,7 @@ class RedisController extends Controller
         return view('admin.redis');
     }
 
-    public function all()
+    public function all(RedisTrans $redisTrans)
     {
         // lua脚本
         $lua = <<<LUA
@@ -35,9 +36,13 @@ local function all(keys)
     local arr = {}
     local typeStr = ''
     local keyLen = #keys
-
+    local listLen = 0
+    
     for index, key in pairs(keys) do
         typeStr = redis.call('type', key)['ok']
+        -- 变成数字下标才可以返回成功
+        -- 关联字符下标返回不成功，但能用关联下标取得值
+        arr[index] = {} 
         arr[index][1] = key
         if (typeStr == 'list') then
             listLen = redis.call('llen', key)
@@ -46,7 +51,7 @@ local function all(keys)
             arr[index][2] = redis.call('get', key)
         end
     end
-
+    
     return arr
 end
 
@@ -54,14 +59,13 @@ return all(keys)
 
 LUA;
 
-        //return arr
-
         $luaRes = $this->redis->eval($lua, 0);
 
-        $data = [];
+        $data = $redisTrans->transKeyValue($luaRes);
 
-        return ["data" => $luaRes];
+        return ["data" => $data];
     }
+
 }
 
 // local keys = redis.call('keys', '*');local keyLen = #keys;local arr = {};local typeStr = '';for index, key in pairs(keys) do typeStr = redis.call('type', key)['ok'];if (typeStr == 'list') then listLen = redis.call('llen', key);arr[key] = redis.call('lrange', key, 0, listLen); elseif (typeStr == 'string') then arr[key] = redis.call('get', key); end end return arr

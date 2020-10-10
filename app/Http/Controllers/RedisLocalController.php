@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Cache\Keys\KillCacheKeys;
 use App\Libs\DbConnection;
 use Illuminate\Http\Request;
 use Illuminate\Redis\Connections\PhpRedisConnection;
@@ -27,7 +28,7 @@ class RedisLocalController extends Controller
     {
         // 获取分布式锁
         // 对应标识 A -- a_fen_bu_shi_lock
-        $lock = Cache::lock("fen_bu_shi_lock", 10);
+        $lock = Cache::lock(KillCacheKeys::fenBuShiStock(), 10);
         if ($lock->get()) {
             // 模拟业务执行需要的时间
             // 生成特定请求的锁
@@ -44,11 +45,11 @@ class RedisLocalController extends Controller
         // 结果：还是会超卖
         // 127.0.0.1:16379> get stock -----------> "-1"
         // 127.0.0.1:16379> get stock1 --> "-1"
-        $stock = $this->redis->get("stock1");
+        $stock = $this->redis->get(KillCacheKeys::stock1());
         dump($stock);
 
         if ($stock > 0) {
-            $this->redis->decr("stock1");
+            $this->redis->decr(KillCacheKeys::stock1());
 
             return "Redis 秒杀<b>成功</b>";
         }
@@ -69,23 +70,23 @@ class RedisLocalController extends Controller
         // 管道，一次请求IO，小优化
         $result = $redis->pipeline(function (\Redis $redis) use (&$stock) {
             // 乐观锁监视
-            $redis->watch("le_stock");
-            $stock = $redis->get("le_stock");
+            $redis->watch(KillCacheKeys::leStock());
+            $stock = $redis->get(KillCacheKeys::leStock());
         });
 
         dump($result);
-        dump($this->redis->get('le_stock'));
+        dump($this->redis->get(KillCacheKeys::leStock()));
         if (!empty($result[1]) && $result[1] > 0) {
             $result = $this->redis->pipeline(function (\Redis $redis) {
                 $redis->multi();
-                $redis->decr("le_stock");
+                $redis->decr(KillCacheKeys::leStock());
                 $redis->exec();
             });
             dump($result);
 
             if ($result[0][0] ?? false) {
                 // 并发下，加入延时队列处理，减少IO和程序等待时间，响应时间减少
-                $this->redis->rPush("redis_kill_product_" . $this->killProductID, Session::getId());
+                $this->redis->rPush(KillCacheKeys::killProductList($this->killProductID), Session::getId());
                 return "Redis 秒杀<b>成功</b>";
             } else {
                 return "Redis 秒杀<b>失败</b>";

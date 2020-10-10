@@ -7,7 +7,7 @@
 
 @section("content")
     <div class="container">
-        <table id="redis" class="display" style="width:90%">
+        <table id="redis" class="display">
             <thead>
             <tr>
                 <th>Key</th>
