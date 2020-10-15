@@ -6,8 +6,8 @@
 @endsection
 
 @section("content")
-    <div class="container">
-        <table id="redis" class="display">
+    <div class="container-fluid">
+        <table id="redis" class="display" style="width: 95%;">
             <thead>
             <tr>
                 <th>Key</th>

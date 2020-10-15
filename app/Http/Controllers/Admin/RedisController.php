@@ -37,12 +37,12 @@ local function all(keys)
     local typeStr = ''
     local keyLen = #keys
     local listLen = 0
-    
+
     for index, key in pairs(keys) do
         typeStr = redis.call('type', key)['ok']
         -- 变成数字下标才可以返回成功
         -- 关联字符下标返回不成功，但能用关联下标取得值
-        arr[index] = {} 
+        arr[index] = {}
         arr[index][1] = key
         if (typeStr == 'list') then
             listLen = redis.call('llen', key)
@@ -51,7 +51,7 @@ local function all(keys)
             arr[index][2] = redis.call('get', key)
         end
     end
-    
+
     return arr
 end
 
