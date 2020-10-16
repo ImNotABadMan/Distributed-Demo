@@ -18,6 +18,7 @@
 #    && docker-php-ext-configure gd --with-freetype --with-jpeg \
 #    && docker-php-ext-install -j$(nproc) gd
 
+#########################################################################################
 
 # 依赖构建好的镜像
 # test/fpm:latest 依赖base/fpm7.4 增加依赖
@@ -34,6 +35,7 @@
 #FROM test/fpm
 #
 #RUN docker-php-ext-install mysqli
+#########################################################################################
 
 
 
