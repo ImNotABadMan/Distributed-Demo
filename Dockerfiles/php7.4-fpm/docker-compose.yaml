@@ -1,0 +1,53 @@
+version: '3'
+services:
+  nginx:
+    image: nginx
+    container_name: glpi_nginx
+    volumes:
+      - /home/ubuntu/dockers/volumes/glpi/conf.d:/etc/nginx/conf.d
+      - /home/ubuntu/dockers/volumes/glpi/glpi_webapp/glpi:/usr/share/webapp
+    ports:
+      - 11080:80
+    networks:
+      static_21:
+        ipv4_address: 172.21.0.2
+
+  php:
+    image: glpi/fpm
+    container_name: glpi_fpm
+    volumes:
+      - /home/ubuntu/dockers/volumes/glpi/glpi_webapp/glpi:/var/www/html
+    # 构建参数，dockerfile中的ARGS
+    #    build:
+    #      context: .
+    #      args:
+    #        - app_root: ''
+#    environment:
+#      APP_ROOT: /var/www/html
+
+    networks:
+      static_21:
+        ipv4_address: 172.21.0.3
+
+    command: "/bin/bash -c 'chmod -R 777 /var/www/html/config && chmod -R 777 /var/www/html/files && export && php-fpm'"
+
+  mysql:
+    image: mysql:5.7
+    container_name: glpi_mysql
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+    networks:
+      static_21:
+        ipv4_address: 172.21.0.4
+    ports:
+      - 13301:3306
+
+networks:
+  static_21:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.21.0.0/16
+
+

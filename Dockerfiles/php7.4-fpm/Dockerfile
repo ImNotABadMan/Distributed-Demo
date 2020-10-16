@@ -16,10 +16,11 @@
 #    libjpeg62-turbo-dev \
 #    libpng-dev \
 #    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-#    && docker-php-ext-install -j$(nproc) gd \
+#    && docker-php-ext-install -j$(nproc) gd
 
 
 # 依赖构建好的镜像
+# test/fpm:latest 依赖base/fpm7.4 增加依赖
 #FROM test/fpm
 #
 #COPY icu/icu4c-52_2-src.tgz /usr/local/src
@@ -30,19 +31,44 @@
 #RUN apt install -y libicu-dev \
 #    && docker-php-ext-install intl
 
+#FROM test/fpm
+#
+#RUN docker-php-ext-install mysqli
+
+
 
 # 依赖构建好的镜像
-FROM test/fpm
+FROM mysql/fpm7.4
 
-WORKDIR .
+# 定义Dockerfile运行的工作目录，/开头才重新刷新使用绝对路径
+#WORKDIR .
 
-RUN cp $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini
+ENV APP_ROOT=/var/www/html
+
+# 用于docker-compose 运行赋值的变量 args
+#ARG app_root
+
+RUN cp $PHP_INI_DIR/php.ini-development $PHP_INI_DIR/php.ini \
+    && mkdir -p /etc/glpi && chmod 777 /etc/glpi
+
 RUN sed -e 's/memory_limit = [[:digit:]]*/memory_limit = 64/g' $PHP_INI_DIR/php.ini | grep -E "memory_limit = [[:digit:]]*" \
-    && sed -e 's/max_execution_time = [[:digit:]]*/max_execution_time = 600/g' $PHP_INI_DIR/php.ini | grep -E "max_execution_time = [[:digit:]]*" \
-RUN sed -i 's/memory_limit = [[:digit:]]*/memory_limit = 64/g' $PHP_INI_DIR/php.ini \
-    && sed -i 's/max_execution_time = [[:digit:]]*/max_execution_time = 600/g' $PHP_INI_DIR/php.ini \
+    && sed -e 's/max_execution_time = [[:digit:]]*/max_execution_time = 600/g' $PHP_INI_DIR/php.ini | grep -E "max_execution_time = [[:digit:]]*"\
+    && sed -i 's/memory_limit = [[:digit:]]*/memory_limit = 64/g' $PHP_INI_DIR/php.ini \
+    && sed -i 's/max_execution_time = [[:digit:]]*/max_execution_time = 600/g' $PHP_INI_DIR/php.ini
 
-# docker build 确定镜像名字
+
+# 运行在基于上一层的这一层镜像中
+RUN /bin/bash -c 'mkdir /var/test'
+
+# 动态，依赖docker-compose执行
+#RUN chmod -R 777 $app_root/config && chmod -R 777 $app_root/files
+
+EXPOSE 9000
+
+# 挂载目录无法再Dockerfile中使用
+#CMD "chmod -R 777 $APP_ROOT/config && chmod -R 777 $AOO_ROOT/files && php-fpm"
+
+# docker build -t 确定镜像名字 .
 
 
 
