@@ -4,7 +4,8 @@
 # Description:       开机初始化网卡 ifconfig
 ### END INIT INFO
 
-
+# crontab
+#* */1 * * * /etc/init.d/ifconfig-init.sh >> /var/log/crontab.log 2>&1
 # 开机测试显示网卡 ifconfig
 
 
