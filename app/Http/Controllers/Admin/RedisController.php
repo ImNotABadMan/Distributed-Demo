@@ -37,6 +37,7 @@ local function all(keys)
     local typeStr = ''
     local keyLen = #keys
     local listLen = 0
+    local zsetLen = 0
 
     for index, key in pairs(keys) do
         typeStr = redis.call('type', key)['ok']
@@ -47,6 +48,9 @@ local function all(keys)
         if (typeStr == 'list') then
             listLen = redis.call('llen', key)
             arr[index][2] = redis.call('lrange', key, 0, listLen)
+         elseif (typeStr == 'zset') then
+            zsetLen = redis.call('zcard', key)
+            arr[index][2] = redis.call('zrange', key, 0, zsetLen)
         elseif (typeStr == 'string') then
             arr[index][2] = redis.call('get', key)
         end
