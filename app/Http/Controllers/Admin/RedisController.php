@@ -48,9 +48,11 @@ local function all(keys)
         if (typeStr == 'list') then
             listLen = redis.call('llen', key)
             arr[index][2] = redis.call('lrange', key, 0, listLen)
-         elseif (typeStr == 'zset') then
+        elseif (typeStr == 'zset') then
             zsetLen = redis.call('zcard', key)
             arr[index][2] = redis.call('zrange', key, 0, zsetLen)
+        elseif (typeStr == 'hash') then
+            arr[index][2] = redis.call('hgetall', key)
         elseif (typeStr == 'string') then
             arr[index][2] = redis.call('get', key)
         end
@@ -62,7 +64,6 @@ end
 return all(keys)
 
 LUA;
-
         $luaRes = $this->redis->eval($lua, 0);
 
         $data = $redisTrans->transKeyValue($luaRes);
