@@ -10,7 +10,7 @@ class ProtoBufController extends Controller
     public function proto()
     {
         $hello = new Hello();
-        $hello->setDes("This is Des");
+//        $hello->setDes("This is Des");
         $hello->setName("server name");
         $hello->setText("This is Text");
         $jsonStr = $hello->serializeToJsonString();

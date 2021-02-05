@@ -6,7 +6,7 @@ package app.ProtoBuf.Hello;
 message Hello {
     string Name = 1;
     string Text = 3;
-    string Des = 2;
+//    string Des = 2;
 }
 
 
