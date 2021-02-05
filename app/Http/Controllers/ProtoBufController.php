@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\ProtoBuf\Hello\Hello;
+use App\ProtoBuf\Hello\PeopleClient;
+use Grpc\ChannelCredentials;
 use Illuminate\Http\Request;
 
 class ProtoBufController extends Controller
@@ -28,5 +30,22 @@ class ProtoBufController extends Controller
             'Text' => 'This is Text',
             'Des' => 'This is Des',
         ];
+    }
+
+    public function grpc()
+    {
+        $client = new PeopleClient("192.168.10.113:9998", [
+            'credentials' => ChannelCredentials::createSsl()
+        ]);
+
+
+        $hello = new Hello();
+        $hello->setName("from client");
+        $hello->setText("from Text");
+
+        $c = $client->SayHello($hello)->wait();
+        dump($client);
+        dump($c);
+
     }
 }
