@@ -26,7 +26,7 @@ class RedisTrans
 
             $arr[$index] = [
                 "key" => $item[0],
-                "value" => $value,
+                "value" => $value ?? '',
             ];
         }
 

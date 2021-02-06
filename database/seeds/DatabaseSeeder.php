@@ -11,16 +11,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+//        $this->call(UsersTableSeeder::class);
         $lastId = \App\Libs\DbConnection::connection(2)->table('users')
             ->latest('id')->limit(1)->first(['id']);
 
+        dump($lastId);
         $lastId = is_null($lastId) ? 1 : $lastId->id + 1;
 
         foreach (range($lastId, $lastId + 40) as $id) {
-            factory(\App\User::class,1)
-                ->connection(\App\Libs\DbConnection::subConnectName($id))
-                ->create(['id' => $id]);
+
+            factory(\App\User::class, 1)
+                ->connection(\App\Libs\DbConnection::subConnectName($id + 1))
+                ->create(['id' => $id, 'role_id' => 1]);
         }
     }
 }

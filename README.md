@@ -29,7 +29,9 @@
 > - php artisan voyager:install  
 >
 > If you prefer installing it with the dummy data run the following command:   
-> - php artisan voyager:install --with   
+> - php artisan voyager:install --with-dummy 
+> 迁移数据库
+> php artisan db:seed --class=VoyagerDatabaseSeeder
 
 - 账号密码：
 > email: admin@admin.com    
