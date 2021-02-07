@@ -3,19 +3,18 @@
 namespace App\Console\Commands;
 
 use App\ProtoBuf\Hello\Hello;
-use Google\Protobuf\Internal\GPBDecodeException;
+use App\ProtoBuf\Hello\PeopleClient;
+use Grpc\ChannelCredentials;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Route;
 
-class ProtobufUnpack extends Command
+class GrpcClient extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'proto:unpack';
+    protected $signature = 'grpc:client';
 
     /**
      * The console command description.
@@ -41,14 +40,18 @@ class ProtobufUnpack extends Command
      */
     public function handle()
     {
-        $body = Http::get(\route('proto'));
-        dump(\route('proto'));
-        dump($body->body());
+        $client = new PeopleClient("192.168.10.113:9998", [
+            'credentials' => ChannelCredentials::createInsecure()
+        ]);
+
 
         $hello = new Hello();
-        $hello->mergeFromString($body->body());
-        dump($hello->getName());
-        dump($hello->getText());
+        $hello->setName("from client");
+        $hello->setText("from Text");
+
+        $c = $client->SayHello($hello)->wait();
+        dump($client);
+        dump($c);
 
         return 0;
     }

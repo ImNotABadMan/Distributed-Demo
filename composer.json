@@ -41,7 +41,7 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
-            "GPBMetadata\\": "GPBMetadata/"
+            "GPBMetadata\\": "app/ProtoBuf/GPBMetadata"
         },
         "classmap": [
             "database/seeds",

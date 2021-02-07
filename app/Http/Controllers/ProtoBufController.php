@@ -35,7 +35,7 @@ class ProtoBufController extends Controller
     public function grpc()
     {
         $client = new PeopleClient("192.168.10.113:9998", [
-            'credentials' => ChannelCredentials::createSsl()
+            'credentials' => ChannelCredentials::createInsecure()
         ]);
 
 

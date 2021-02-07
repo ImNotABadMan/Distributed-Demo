@@ -24,7 +24,7 @@ class PeopleClient extends \Grpc\BaseStub {
      */
     public function SayHello(\App\ProtoBuf\Hello\Hello $argument,
       $metadata = [], $options = []) {
-        return $this->_simpleRequest('/app.ProtoBuf.Hello.People/SayHello',
+        return $this->_simpleRequest('/People/SayHello',
         $argument,
         ['\App\ProtoBuf\Hello\Hello', 'decode'],
         $metadata, $options);

@@ -1,6 +1,6 @@
 syntax="proto3";
 
-package app.ProtoBuf.Hello;
+option php_namespace="App\\ProtoBuf\\Hello";
 
 service People {
     rpc SayHello(Hello) returns (Hello) {}
