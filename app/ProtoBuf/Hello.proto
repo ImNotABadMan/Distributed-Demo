@@ -14,9 +14,13 @@ message Hello {
 
 
 
-// 安装protoc
+// 安装protoc 可以使用编译安装或者直接下载二进制文件
 // protoc 使用cmake和bazel 编译安装
+// mkdir -p cmake/build
+// cd cmake/build
+// cmake ../..
 // linux 安装 grpc_php_plugin，windows 编译安装太复杂，移入export PATH中
+// 安装php grpc扩展，安装composer grpc包，安装protobuf composer包
 // 编写 .proto文件，用protoc命令生成 grpc，protobuf等php文件
 
 
