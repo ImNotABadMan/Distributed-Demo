@@ -20,7 +20,7 @@ class Hello extends \Google\Protobuf\Internal\Message
     /**
      *    string Des = 2;
      *
-     * Generated from protobuf field <code>string Text = 3;</code>
+     * Generated from protobuf field <code>string Text = 2;</code>
      */
     protected $Text = '';
 
@@ -65,7 +65,7 @@ class Hello extends \Google\Protobuf\Internal\Message
     /**
      *    string Des = 2;
      *
-     * Generated from protobuf field <code>string Text = 3;</code>
+     * Generated from protobuf field <code>string Text = 2;</code>
      * @return string
      */
     public function getText()
@@ -76,7 +76,7 @@ class Hello extends \Google\Protobuf\Internal\Message
     /**
      *    string Des = 2;
      *
-     * Generated from protobuf field <code>string Text = 3;</code>
+     * Generated from protobuf field <code>string Text = 2;</code>
      * @param string $var
      * @return $this
      */

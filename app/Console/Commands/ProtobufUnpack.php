@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use App\ProtoBuf\Hello\Hello;
-use Google\Protobuf\Internal\GPBDecodeException;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;

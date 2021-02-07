@@ -8,13 +8,26 @@ service People {
 
 message Hello {
     string Name = 1;
-    string Text = 3;
+    string Text = 2;
 //    string Des = 2;
 }
 
 
 
+// 安装protoc
+// protoc 使用cmake和bazel 编译安装
+// linux 安装 grpc_php_plugin，windows 编译安装太复杂，移入export PATH中
+// 编写 .proto文件，用protoc命令生成 grpc，protobuf等php文件
 
 
 // protoc -I=. --php_out=../../ --grpc_out=../../ --plugin= hello.proto
 // protoc -I=. --php_out=../.. --grpc_out=../.. --plugin=protoc-gen-grpc=/usr/local/bin/grpc_php_plugin Hello.proto
+// protoc -I=. --php_out. --grpc_out. --plugin=protoc-gen-grpc=/usr/local/bin/grpc_php_plugin Hello.proto
+
+
+// fix grpc : option php_namespace="App\\ProtoBuf\\Hello"; 需要删除package，生成的rpc文件才可以用
+//
+// 之前写了package app.ProtoBuf.Hello
+// $this->_simpleRequest('/app.ProtoBuf.Hello.People/SayHello')
+// 去除之后才可以请求成功，服务路径才对了
+// $this->_simpleRequest('/People/SayHello')
