@@ -30,4 +30,18 @@ class PeopleClient extends \Grpc\BaseStub {
         $metadata, $options);
     }
 
+    /**
+     * @param \App\ProtoBuf\Hello\Hello $argument input argument
+     * @param array $metadata metadata
+     * @param array $options call options
+     * @return \Grpc\UnaryCall
+     */
+    public function SayHelloAgain(\App\ProtoBuf\Hello\Hello $argument,
+      $metadata = [], $options = []) {
+        return $this->_simpleRequest('/People/SayHelloAgain',
+        $argument,
+        ['\App\ProtoBuf\Hello\Hello', 'decode'],
+        $metadata, $options);
+    }
+
 }

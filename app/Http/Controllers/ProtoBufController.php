@@ -49,6 +49,16 @@ class ProtoBufController extends Controller
         if ($c[0] instanceof Hello) {
             dump($c[0]->getText());
             dump($c[0]->getName());
+        } else {
+            dump($c);
+        }
+
+        $c = $client->SayHelloAgain($hello)->wait();
+        dump($client);
+
+        if ($c[0] instanceof Hello) {
+            dump($c[0]->getText());
+            dump($c[0]->getName());
         }
 
         dump($c);

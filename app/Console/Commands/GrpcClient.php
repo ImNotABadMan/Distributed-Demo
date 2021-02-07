@@ -55,10 +55,19 @@ class GrpcClient extends Command
         if ($c[0] instanceof Hello) {
             dump($c[0]->getName());
             dump($c[0]->getText());
+        } else {
+            dump($c);
+        }
+
+        $c = $client->SayHelloAgain($hello)->wait();
+        dump($client);
+
+        if ($c[0] instanceof Hello) {
+            dump($c[0]->getText());
+            dump($c[0]->getName());
         }
 
         dump($c);
-
         return 0;
     }
 }

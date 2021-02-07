@@ -4,6 +4,7 @@ option php_namespace="App\\ProtoBuf\\Hello";
 
 service People {
     rpc SayHello(Hello) returns (Hello) {}
+    rpc SayHelloAgain(Hello) returns (Hello) {};
 }
 
 message Hello {
