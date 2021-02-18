@@ -39,3 +39,4 @@ Route::group(['prefix' => 'admin'], function () {
 Route::get('proto', 'ProtoBufController@proto')->name('proto');
 Route::get('json', 'ProtoBufController@json')->name('json');
 Route::get('grpc', 'ProtoBufController@grpc')->name('grpc');
+Route::get('kafka', 'KafkaController@index')->name('kafka');
