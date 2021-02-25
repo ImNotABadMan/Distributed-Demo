@@ -9,4 +9,6 @@ class Orders extends Model
     protected $table = "ss_orders";
 
     protected $primaryKey  = "OrderID";
+
+    public $timestamps = false;
 }
