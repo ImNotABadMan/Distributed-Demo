@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\User;
 use Illuminate\Console\Command;
 use RdKafka\Conf;
 use RdKafka\Consumer;
@@ -47,12 +48,22 @@ class KafkaConsumer extends Command
         $kafkaConsumer->addBrokers("127.0.0.1");
         dump($kafkaConsumer);
         $topic = $kafkaConsumer->newTopic("my-replicated-topic");
-        $topic->consumeStart(0, RD_KAFKA_OFFSET_BEGINNING);
+        $topic->consumeStart(0, RD_KAFKA_OFFSET_END);
 
         while (true) {
             try {
                 $msg = $topic->consume(0, 1000);
                 dump($msg);
+                if (!is_null($msg) && !empty($msg->payload)) {
+                    $user = json_decode($msg->payload, true);
+                    $userEloquent = User::find($user['id']);
+                    dump($userEloquent);
+                }
+                unset($msg);
+                unset($user);
+                unset($userEloquent);
+                gc_mem_caches();
+                gc_collect_cycles();
             } catch (\Exception $exception) {
                 dump($exception);
                 break;
