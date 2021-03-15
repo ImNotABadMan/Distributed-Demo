@@ -45,7 +45,7 @@ class KafkaConsumer extends Command
 //        $conf->set('debug', 'all');
         dump($conf);
         $kafkaConsumer = new Consumer($conf);
-        $kafkaConsumer->addBrokers("127.0.0.1");
+        $kafkaConsumer->addBrokers(config('kafka.host'));
         dump($kafkaConsumer);
         $topic = $kafkaConsumer->newTopic("my-replicated-topic");
         $topic->consumeStart(0, RD_KAFKA_OFFSET_END);
