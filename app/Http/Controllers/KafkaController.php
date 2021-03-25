@@ -35,10 +35,10 @@ class KafkaController extends Controller
         $kafkaProducer->addBrokers(config('kafka.host'));
         $topic = $kafkaProducer->newTopic("my-replicated-topic");
 
-        for ($i = 0; $i < 100000; $i++) {
+//        for ($i = 0; $i < 100000; $i++) {
 
             $topic->produce(0, 0, $user);
-        }
+//        }
         dump($kafkaProducer);
         dump($topic);
 

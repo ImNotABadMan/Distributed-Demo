@@ -46,8 +46,10 @@ class KafkaConsumer extends Command
         dump($conf);
         $kafkaConsumer = new Consumer($conf);
         $kafkaConsumer->addBrokers(config('kafka.host'));
+//        $kafkaConsumer->addBrokers("192.168.10.108");
         dump($kafkaConsumer);
         $topic = $kafkaConsumer->newTopic("my-replicated-topic");
+//        $topic = $kafkaConsumer->newTopic("test1");
         $topic->consumeStart(0, RD_KAFKA_OFFSET_END);
 
         while (true) {
@@ -56,12 +58,14 @@ class KafkaConsumer extends Command
                 dump($msg);
                 if (!is_null($msg) && !empty($msg->payload)) {
                     $user = json_decode($msg->payload, true);
-                    $userEloquent = User::find($user['id']);
-                    dump($userEloquent);
+                    if ($user['id'] ?? '') {
+                        $userEloquent = User::find($user['id']);
+                        dump($userEloquent);
+                        unset($user);
+                        unset($userEloquent);
+                    }
                 }
                 unset($msg);
-                unset($user);
-                unset($userEloquent);
                 gc_mem_caches();
                 gc_collect_cycles();
             } catch (\Exception $exception) {
