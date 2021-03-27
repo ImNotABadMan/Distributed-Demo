@@ -19,6 +19,7 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.1",
         "nikic/php-parser": "^4.4",
+        "php-amqplib/php-amqplib": "^3.0",
         "tcg/voyager": "^1.4"
     },
     "require-dev": {
