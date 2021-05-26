@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use RdKafka\Conf;
@@ -44,6 +45,8 @@ class RabbitmqProducer extends Command
         $this->testRabbitMQ();
 
         $this->testKafka();
+
+//        $this->testMySQL();
 
         return 0;
     }
@@ -130,6 +133,28 @@ class RabbitmqProducer extends Command
 //        }
 
 //        echo " [x] Sent 'Hello World!'\n";
+    }
+
+    private function testMySQL()
+    {
+
+        dump("start mysql produce:");
+
+        $now = now();
+        dump($now->toDateTimeString('millisecond'));
+
+        $payload = str_repeat('testtesttt', 100);
+
+        for ($i = 0; $i < 10000; $i++) {
+            DB::insert('insert into test_mysql_queue values(null, ?)', [$payload]);
+        }
+
+
+        $end = now();
+        dump($end->diff($now)->i . ":" . $end->diff($now)->s . ":" . $end->diff($now)->f);
+        dump($end->toDateTimeString('millisecond'));
+
+
     }
 
 }
