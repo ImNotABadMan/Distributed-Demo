@@ -47,12 +47,13 @@ class KafkaConsumer extends Command
         $kafkaConsumer = new Consumer($conf);
         $kafkaConsumer->addBrokers(config('kafka.host'));
 //        $kafkaConsumer->addBrokers("192.168.10.108");
-        dump($kafkaConsumer);
-        $topic = $kafkaConsumer->newTopic("my-replicated-topic");
+//        dump($kafkaConsumer);
+//        $topic = $kafkaConsumer->newTopic("my-replicated-topic");
+        $topic = $kafkaConsumer->newTopic("shopify-publish");
 //        $topic = $kafkaConsumer->newTopic("test1");
         $topic->consumeStart(0, RD_KAFKA_OFFSET_END);
 
-        while (true) {
+//        while (true) {
             try {
                 $msg = $topic->consume(0, 1000);
                 dump($msg);
@@ -70,11 +71,11 @@ class KafkaConsumer extends Command
                 gc_collect_cycles();
             } catch (\Exception $exception) {
                 dump($exception);
-                break;
+//                break;
             }
 
 
-        }
+//        }
 
         return 0;
     }
