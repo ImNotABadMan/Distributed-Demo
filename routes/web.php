@@ -41,3 +41,4 @@ Route::get('json', 'ProtoBufController@json')->name('json');
 Route::get('grpc', 'ProtoBufController@grpc')->name('grpc');
 Route::get('kafka', 'KafkaController@index')->name('kafka');
 Route::get('kafka/producer', 'KafkaController@producer')->name('kafka.producer');
+Route::get('algorithm/merge_sort', 'AlgorithmController@mergeSort')->name('algorithm.merge_sort');
